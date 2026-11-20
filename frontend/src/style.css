@@ -3,3 +3,31 @@
 @media(max-width:760px){.sidebar{position:fixed;left:0;top:0;bottom:0;height:100dvh;transform:translateX(-105%);transition:transform .25s;width:270px;box-shadow:15px 0 50px #0005}.sidebar.open{transform:translateX(0)}.sidebar-close,.mobile-menu{display:inline-grid}.mobile-scrim{display:block;position:fixed;inset:0;background:#0008;z-index:8}.topbar{height:60px;padding:0 14px}.top-actions{gap:4px}.global-search{width:34px;border:0;background:transparent;padding:0}.global-search input,.global-search kbd{display:none}.top-divider,.profile-chip span,.profile-chip>svg{display:none}.page-wrap{padding:22px 14px}.page-heading{align-items:flex-start;flex-direction:column}.page-heading>.btn{align-self:flex-start}.hero-panel{padding:22px;min-height:225px}.hero-orbit{width:120px;height:140px;margin-right:-20px;transform:scale(.72)}.hero-panel h2{font-size:23px}.hero-panel p{max-width:270px;line-height:1.5}.bot-grid,.support-grid{grid-template-columns:1fr 1fr}.customizer-layout{grid-template-columns:1fr}.admin-tiles{grid-template-columns:1fr 1fr}.footer{padding:13px 14px;gap:9px;flex-wrap:wrap}.footer span:last-child{display:none}.log-list>div{grid-template-columns:70px 1fr;gap:7px}.log-list>div span{grid-column:2}.owner-banner{align-items:flex-start;flex-wrap:wrap}.owner-badge{margin-left:60px}}
 @media(max-width:480px){.stats-grid{gap:8px}.stat-card{padding:12px}.stat-card strong{font-size:21px}.bot-grid,.product-grid,.support-grid,.admin-tiles,.security-grid{grid-template-columns:1fr}.hero-orbit{display:none}.hero-panel{min-height:0}.hero-panel h2{font-size:25px}.breadcrumbs{font-size:10px}.breadcrumbs span,.breadcrumbs svg{display:none}.tabs button{padding:7px 9px}.status-banner{flex-wrap:wrap}.status-banner .status-pill{margin-left:auto}.setting-row{align-items:flex-start}.owner-banner h2{font-size:16px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+
+/* Smooth animated transition between light and dark themes */
+.app-shell,.sidebar,.topbar,.stat-card,.panel,.bot-card,.product-card,.nav-link,
+.workspace-switch,.global-search,.footer,.field-label input,.field-label textarea,
+.settings-panel select,.admin-tile,.status-banner,.tabs,.support-card,.setting-row {
+  transition-property: background-color, color, border-color, box-shadow;
+  transition-duration: .42s;
+  transition-timing-function: cubic-bezier(.2,.75,.25,1);
+}
+.app-shell.theme-changing::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  background: var(--bg);
+  clip-path: circle(0 at calc(100% - 42px) 34px);
+  animation: codryx-theme-reveal .72s cubic-bezier(.2,.75,.25,1) forwards;
+}
+@keyframes codryx-theme-reveal {
+  0% { clip-path: circle(0 at calc(100% - 42px) 34px); opacity: .92; }
+  72% { opacity: .72; }
+  100% { clip-path: circle(150% at calc(100% - 42px) 34px); opacity: 0; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .app-shell.theme-changing::after { animation-duration: .01ms; }
+}
