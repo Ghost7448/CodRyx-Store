@@ -37,7 +37,15 @@ function App(){
   const [toast,setToast]=useState(''),[botName,setBotName]=useState('Codryx Support'),[welcome,setWelcome]=useState('Welcome to our support center! How can we help you today?');
   const [accent,setAccent]=useState('#c83240'),[language,setLanguage]=useState('English'),[modal,setModal]=useState(false);
   const [activeFilter,setActiveFilter]=useState('All'),[notifications,setNotifications]=useState(true);
-  useEffect(()=>{\n    if(!window.history.state?.codryxPage){window.history.replaceState({...window.history.state,codryxPage:page},'',window.location.href)}\n    const handleBack=()=>{const previous=window.history.state?.codryxPage;if(previous)setPage(previous);setMenu(false)};\n    window.addEventListener('popstate',handleBack);\n    return()=>window.removeEventListener('popstate',handleBack);\n  },[]);\n  const notify=(msg)=>{setToast(msg);window.clearTimeout(window.__codryxToast);window.__codryxToast=window.setTimeout(()=>setToast(''),2500)};\n  const go=(p)=>{if(p!==page){window.history.pushState({...window.history.state,codryxPage:p},'',window.location.href);setPage(p)}setMenu(false)};\n  const changeTheme=()=>{setThemeChanging(true);setDark(v=>!v);window.clearTimeout(window.__codryxTheme);window.__codryxTheme=window.setTimeout(()=>setThemeChanging(false),720)};
+  useEffect(()=>{
+    if(!window.history.state?.codryxPage){window.history.replaceState({...window.history.state,codryxPage:page},'',window.location.href)}
+    const handleBack=()=>{const previous=window.history.state?.codryxPage;if(previous)setPage(previous);setMenu(false)};
+    window.addEventListener('popstate',handleBack);
+    return()=>window.removeEventListener('popstate',handleBack);
+  },[]);
+  const notify=(msg)=>{setToast(msg);window.clearTimeout(window.__codryxToast);window.__codryxToast=window.setTimeout(()=>setToast(''),2500)};
+  const go=(p)=>{if(p!==page){window.history.pushState({...window.history.state,codryxPage:p},'',window.location.href);setPage(p)}setMenu(false)};
+  const changeTheme=()=>{setThemeChanging(true);setDark(v=>!v);window.clearTimeout(window.__codryxTheme);window.__codryxTheme=window.setTimeout(()=>setThemeChanging(false),720)};
   const toggle=(id)=>setBots(v=>v.map(b=>b.id===id?{...b,status:b.status==='Online'?'Offline':'Online'}:b));
   const filtered=useMemo(()=>bots.filter(b=>(activeFilter==='All'||b.status===activeFilter)&&[b.name,b.type,b.guild].join(' ').toLowerCase().includes(query.toLowerCase())),[bots,activeFilter,query]);
   const addBot=(type='Utility Bot')=>{const icon=type==='Ticket Bot'?'🎫':type==='Welcome Bot'?'👋':type==='Protection Bot'?'🛡️':'⚙️';const b={id:'CDX-'+(1028+bots.length-4),name:'New '+type,type,status:'Offline',guild:'Not connected',uptime:'—',memory:'—',icon};setBots(v=>[b,...v]);setBotName(b.name);setModal(false);go('Customizer');notify('Bot instance added in preview mode')};
