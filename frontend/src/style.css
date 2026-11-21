@@ -31,3 +31,66 @@
 @media(prefers-reduced-motion:reduce) {
   .app-shell.theme-changing::after { animation-duration: .01ms; }
 }
+
+/* CodRyx Liquid Glass system + balanced light palette */
+.app-shell{--glass-blur:22px;--glass-border:rgba(255,255,255,.10);--glass-highlight:rgba(255,255,255,.08);background-color:var(--bg);isolation:isolate}
+.app-shell:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(ellipse at 12% 8%,color-mix(in srgb,var(--accent) 13%,transparent),transparent 34%),radial-gradient(ellipse at 88% 90%,rgba(130,75,110,.10),transparent 36%)}
+.sidebar,.topbar,.workspace-switch,.global-search,.stat-card,.panel,.bot-card,.product-card,.admin-tile,.modal-card,.status-banner,.security-score,.security-row,.settings-panel,.invoice-sheet,.payment-result-card,.checkout-card,.order-summary{backdrop-filter:blur(var(--glass-blur)) saturate(145%);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(145%)}
+.sidebar{background:color-mix(in srgb,var(--surface) 78%,transparent);border-right-color:var(--glass-border);box-shadow:8px 0 35px #0000000a}
+.topbar{background:color-mix(in srgb,var(--bg) 68%,transparent);border-bottom-color:var(--glass-border)}
+.workspace-switch,.global-search{background:color-mix(in srgb,var(--surface2) 72%,transparent);border-color:var(--glass-border)}
+.stat-card,.panel,.bot-card,.product-card,.admin-tile,.status-banner,.security-score,.security-row,.modal-card,.invoice-sheet,.payment-result-card,.checkout-card,.order-summary{background:linear-gradient(145deg,color-mix(in srgb,var(--surface) 88%,white 2%),color-mix(in srgb,var(--surface) 72%,transparent));border-color:var(--glass-border);box-shadow:0 10px 34px #00000012,inset 0 1px 0 var(--glass-highlight)}
+.stat-card:hover,.bot-card:hover,.product-card:hover,.admin-tile:hover{box-shadow:0 16px 38px #00000020,inset 0 1px 0 var(--glass-highlight)}
+.icon-btn:hover,.nav-link:hover,.tabs,.field-label input,.field-label textarea,.settings-panel select,.payment-method{backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.nav-link.active{color:var(--text);background:linear-gradient(100deg,var(--accent-soft),color-mix(in srgb,var(--surface) 38%,transparent));border-left:2px solid var(--accent)}
+.btn-outline{background:color-mix(in srgb,var(--surface2) 74%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.field-label input,.field-label textarea,.settings-panel select{background:color-mix(in srgb,var(--surface2) 78%,transparent)}
+.modal-backdrop{background:#07050970;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.toast{backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:color-mix(in srgb,var(--surface) 78%,transparent);border-color:var(--glass-border)}
+.app-shell.light{--bg:#f1f2f6;--surface:rgba(255,255,255,.70);--surface2:rgba(255,255,255,.54);--line:rgba(76,55,65,.13);--text:#241b20;--muted:#74666d;--accent:#b92738;--accent-soft:rgba(185,39,56,.10);--glass-border:rgba(255,255,255,.82);--glass-highlight:rgba(255,255,255,.88);color-scheme:light;background:linear-gradient(135deg,#f6f4f6 0%,#edf0f6 48%,#f4eef1 100%)}
+.app-shell.light:before{background:radial-gradient(ellipse at 12% 8%,rgba(198,54,72,.10),transparent 34%),radial-gradient(ellipse at 88% 90%,rgba(119,105,165,.10),transparent 36%)}
+.app-shell.light .sidebar{background:rgba(255,255,255,.66);border-right:1px solid rgba(105,79,91,.12);box-shadow:8px 0 35px rgba(48,31,40,.045)}
+.app-shell.light .topbar{background:rgba(249,248,251,.66);border-bottom:1px solid rgba(105,79,91,.12)}
+.app-shell.light .workspace-switch,.app-shell.light .global-search{background:rgba(255,255,255,.58);border-color:rgba(105,79,91,.14)}
+.app-shell.light .nav-label{color:#857780}
+.app-shell.light .nav-link{color:#6e6068}
+.app-shell.light .nav-link:hover{background:rgba(185,39,56,.07);color:#30232a}
+.app-shell.light .nav-link.active{color:#a51e30;background:linear-gradient(100deg,rgba(185,39,56,.13),rgba(255,255,255,.28));border-left-color:#b92738}
+.app-shell.light .eyebrow,.app-shell.light .text-action{color:#a92334}
+.app-shell.light .stat-top,.app-shell.light .breadcrumbs,.app-shell.light .setting-row span{color:#74666d}
+.app-shell.light .stat-card small{color:#28834e}
+.app-shell.light .hero-panel{background:radial-gradient(circle at 82% 35%,rgba(197,45,63,.42),transparent 35%),linear-gradient(115deg,#3b1821,#1b1016 72%);border-color:#713440;box-shadow:0 16px 38px rgba(71,24,36,.15)}
+.app-shell.light .store-banner{background:linear-gradient(110deg,#f9e8eb,#f4dfe3);border-color:#e9c3ca;color:#a92334;box-shadow:0 12px 30px rgba(93,38,51,.07)}
+.app-shell.light .store-banner h2{color:#371d25}
+.app-shell.light .store-banner p{color:#775c64}
+.app-shell.light .owner-banner{background:linear-gradient(105deg,#f8e8eb,#f4f0f2);border-color:#e8c5cc;box-shadow:0 12px 30px rgba(93,38,51,.07)}
+.app-shell.light .owner-banner h2{color:#321d24}
+.app-shell.light .owner-banner p{color:#765f66}
+.app-shell.light .owner-banner span{color:#a72a3a}
+.app-shell.light .owner-badge{border-color:#d8aab2;color:#9e2636!important}
+.app-shell.light .help-card{background:linear-gradient(145deg,#fae9ec,#f4e9ec);border-color:#e7c6cc}
+.app-shell.light .help-card b{color:#39242a}
+.app-shell.light .help-card span{color:#79636a}
+.app-shell.light .help-card button,.app-shell.light .help-icon{color:#a92334}
+.app-shell.light .preview-panel{background:#17191f;border-color:#30323a;color:#e8e9ed}
+.app-shell.light .preview-embed{background:#20232b}
+.app-shell.light .preview-embed span{color:#a8abb5}
+.app-shell.light .table-wrap td{border-top-color:rgba(76,55,65,.12)}
+.app-shell.light .tabs{background:rgba(255,255,255,.58);border-color:rgba(105,79,91,.14)}
+.app-shell.light .tabs button{color:#766871}
+.app-shell.light .tabs button.selected{background:linear-gradient(135deg,#c43a49,#a51e30);color:#fff}
+.app-shell.light .field-label input,.app-shell.light .field-label textarea,.app-shell.light .settings-panel select{background:rgba(255,255,255,.72);border-color:rgba(105,79,91,.18);color:#241b20}
+.app-shell.light .field-label input::placeholder,.app-shell.light .field-label textarea::placeholder{color:#96868d}
+.app-shell.light .btn-outline{background:rgba(255,255,255,.66);border-color:rgba(105,79,91,.18);color:#382a30}
+.app-shell.light .modal-card{background:rgba(255,255,255,.84);border-color:rgba(255,255,255,.9)}
+.app-shell.light .toast{background:rgba(255,255,255,.82);border-color:rgba(105,79,91,.15);color:#241b20}
+.app-shell.light .footer{border-top-color:rgba(76,55,65,.12)}
+.app-shell.light .notice-strip{background:rgba(185,39,56,.08);border-color:rgba(185,39,56,.18);color:#8f2634}
+.app-shell.light .security-row .status-pill.online{color:#287b4b}
+.app-shell.light .payment-note{background:rgba(185,39,56,.08);color:#6f5e65}
+.app-shell.light .payment-note svg{color:#a92334}
+.app-shell.light .status-pill.offline{color:#a42c3b;background:rgba(185,39,56,.09)}
+.app-shell.light .status-pill.online{color:#287b4b;background:rgba(40,131,78,.09)}
+.app-shell.light .chart-bars div{background:linear-gradient(180deg,#d74b59,#9f2333)}
+.app-shell.light .invoice-watermark{color:rgba(169,35,52,.22);border-color:rgba(169,35,52,.22)}
+@media(prefers-reduced-transparency:reduce){.sidebar,.topbar,.workspace-switch,.global-search,.stat-card,.panel,.bot-card,.product-card,.admin-tile,.modal-card,.status-banner,.security-score,.security-row,.settings-panel,.invoice-sheet,.payment-result-card,.checkout-card,.order-summary{backdrop-filter:none;-webkit-backdrop-filter:none}}
