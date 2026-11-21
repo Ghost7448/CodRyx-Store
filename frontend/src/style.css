@@ -121,3 +121,225 @@
  :where(button,a,[role="button"],input[type="button"],input[type="submit"],.btn,.icon-btn,.nav-link){transition:none}
  :where(button,a,[role="button"],input[type="button"],input[type="submit"],.btn,.icon-btn,.nav-link):focus-visible{animation:none}
 }
+
+
+/* CodRyx v2 — refined Liquid Glass + motion language */
+.app-shell{
+  --glass-blur:28px;
+  --glass-border:rgba(255,255,255,.16);
+  --glass-highlight:rgba(255,255,255,.42);
+  --motion-spring:cubic-bezier(.2,.8,.2,1);
+}
+.app-shell.light{
+  --bg:#eef1f7;
+  --surface:rgba(255,255,255,.76);
+  --surface2:rgba(255,255,255,.62);
+  --line:rgba(69,82,108,.13);
+  --text:#202536;
+  --muted:#687187;
+  --accent:#bd3044;
+  --accent-soft:rgba(189,48,68,.095);
+  --glass-border:rgba(255,255,255,.92);
+  --glass-highlight:rgba(255,255,255,.96);
+  background:
+    radial-gradient(ellipse at 8% 0%,rgba(208,93,113,.12),transparent 34%),
+    radial-gradient(ellipse at 94% 18%,rgba(113,139,190,.14),transparent 36%),
+    linear-gradient(145deg,#f7f8fc 0%,#edf0f7 54%,#f5f0f3 100%);
+}
+.app-shell.light:before{
+  background:
+    radial-gradient(ellipse at 14% 12%,rgba(195,54,77,.085),transparent 32%),
+    radial-gradient(ellipse at 84% 86%,rgba(106,128,176,.10),transparent 38%);
+}
+.app-shell.light .ambient{opacity:.10;filter:blur(115px)}
+.app-shell.light .sidebar{
+  background:linear-gradient(160deg,rgba(255,255,255,.82),rgba(247,249,253,.68));
+  border-right-color:rgba(83,96,122,.12);
+  box-shadow:12px 0 42px rgba(44,53,76,.055),inset -1px 0 rgba(255,255,255,.8);
+}
+.app-shell.light .topbar{
+  background:rgba(248,250,255,.72);
+  border-bottom-color:rgba(83,96,122,.12);
+  box-shadow:0 8px 28px rgba(44,53,76,.035);
+}
+.app-shell.light .workspace-switch,
+.app-shell.light .global-search{
+  background:rgba(255,255,255,.68);
+  border-color:rgba(91,105,133,.14);
+  box-shadow:inset 0 1px rgba(255,255,255,.95),0 5px 18px rgba(45,54,78,.035);
+}
+.app-shell.light .stat-card,
+.app-shell.light .panel,
+.app-shell.light .bot-card,
+.app-shell.light .product-card,
+.app-shell.light .admin-tile,
+.app-shell.light .status-banner,
+.app-shell.light .security-score,
+.app-shell.light .security-row,
+.app-shell.light .modal-card,
+.app-shell.light .invoice-sheet,
+.app-shell.light .payment-result-card,
+.app-shell.light .checkout-card,
+.app-shell.light .order-summary{
+  background:linear-gradient(145deg,rgba(255,255,255,.88),rgba(255,255,255,.63));
+  border-color:rgba(255,255,255,.94);
+  box-shadow:0 12px 34px rgba(48,57,80,.065),inset 0 1px 0 #fff;
+}
+.app-shell.light .stat-card:hover,
+.app-shell.light .bot-card:hover,
+.app-shell.light .product-card:hover,
+.app-shell.light .admin-tile:hover{
+  border-color:rgba(190,54,75,.25);
+  box-shadow:0 18px 42px rgba(48,57,80,.11),inset 0 1px #fff;
+}
+.app-shell.light .nav-link{color:#667087}
+.app-shell.light .nav-link:hover{
+  color:#273044;
+  background:rgba(189,48,68,.065);
+}
+.app-shell.light .nav-link.active{
+  color:#a92338;
+  background:linear-gradient(100deg,rgba(189,48,68,.13),rgba(255,255,255,.52));
+  box-shadow:inset 0 1px rgba(255,255,255,.85);
+}
+.app-shell.light .nav-label{color:#8991a3}
+.app-shell.light .breadcrumbs,
+.app-shell.light .stat-top,
+.app-shell.light .setting-row span{color:#707a90}
+.app-shell.light .eyebrow,
+.app-shell.light .text-action{color:#ae2d42}
+.app-shell.light .global-search input{color:#273044}
+.app-shell.light .global-search kbd{background:rgba(255,255,255,.8);border-color:#e1e5ee;color:#737d91}
+.app-shell.light .icon-btn{color:#778196}
+.app-shell.light .icon-btn:hover{background:rgba(255,255,255,.85);color:#a92338}
+.app-shell.light .help-card{
+  background:linear-gradient(145deg,rgba(255,255,255,.86),rgba(250,231,235,.78));
+  border-color:rgba(191,91,108,.20);
+  box-shadow:inset 0 1px #fff,0 8px 24px rgba(76,43,54,.045);
+}
+.app-shell.light .help-card b{color:#382b36}
+.app-shell.light .help-card span{color:#766a78}
+.app-shell.light .help-card button,.app-shell.light .help-icon{color:#ae2d42}
+.app-shell.light .hero-panel{
+  background:radial-gradient(circle at 82% 35%,rgba(196,55,76,.42),transparent 35%),linear-gradient(115deg,#49202c,#201923 72%);
+  border-color:rgba(198,104,119,.42);
+  box-shadow:0 18px 44px rgba(78,31,47,.16),inset 0 1px rgba(255,255,255,.16);
+}
+.app-shell.light .store-banner{
+  background:linear-gradient(115deg,rgba(255,255,255,.86),rgba(250,226,231,.9));
+  border-color:rgba(192,87,105,.22);
+  box-shadow:0 14px 34px rgba(74,43,55,.07),inset 0 1px #fff;
+}
+.app-shell.light .store-banner h2{color:#382630}
+.app-shell.light .store-banner p{color:#776875}
+.app-shell.light .owner-banner{
+  background:linear-gradient(110deg,rgba(255,255,255,.9),rgba(250,230,234,.86));
+  border-color:rgba(190,83,101,.22);
+  box-shadow:0 14px 34px rgba(74,43,55,.07),inset 0 1px #fff;
+}
+.app-shell.light .owner-banner h2{color:#352632}
+.app-shell.light .owner-banner p{color:#766775}
+.app-shell.light .owner-banner span{color:#a72a40}
+.app-shell.light .owner-badge{border-color:#dfb4bd;color:#9f293d!important}
+.app-shell.light .field-label input,
+.app-shell.light .field-label textarea,
+.app-shell.light .settings-panel select{
+  background:rgba(255,255,255,.78);
+  color:#252c3e;
+  border-color:rgba(91,105,133,.17);
+  box-shadow:inset 0 1px 2px rgba(38,47,68,.025);
+}
+.app-shell.light .field-label input:focus,
+.app-shell.light .field-label textarea:focus,
+.app-shell.light .settings-panel select:focus{
+  border-color:rgba(189,48,68,.55);
+  box-shadow:0 0 0 4px rgba(189,48,68,.09),0 5px 18px rgba(189,48,68,.06);
+}
+.app-shell.light .btn-outline{
+  color:#354055;
+  background:rgba(255,255,255,.72);
+  border-color:rgba(91,105,133,.18);
+  box-shadow:inset 0 1px #fff,0 5px 15px rgba(38,47,68,.035);
+}
+.app-shell.light .btn-outline:hover{border-color:rgba(189,48,68,.35);color:#a92338}
+.app-shell.light .tabs{
+  background:rgba(255,255,255,.66);
+  border-color:rgba(91,105,133,.13);
+  box-shadow:inset 0 1px #fff;
+}
+.app-shell.light .tabs button{color:#717b91}
+.app-shell.light .tabs button.selected{
+  background:linear-gradient(135deg,#cf485a,#a92338);
+  color:#fff;
+  box-shadow:0 5px 15px rgba(169,35,56,.2),inset 0 1px rgba(255,255,255,.22);
+}
+.app-shell.light .table-wrap td{border-top-color:rgba(91,105,133,.12)}
+.app-shell.light .table-wrap tr:first-child td{color:#465168}
+.app-shell.light .toast{
+  color:#252c3e;
+  background:rgba(255,255,255,.86);
+  border-color:rgba(255,255,255,.95);
+  box-shadow:0 16px 45px rgba(35,43,62,.15),inset 0 1px #fff;
+}
+.app-shell.light .modal-backdrop{background:rgba(31,34,48,.34)}
+.app-shell.light .notice-strip{color:#92283b}
+.app-shell.light .status-pill.online{color:#28784d}
+.app-shell.light .status-pill.offline{color:#a42c3d}
+.app-shell.light .preview-panel{background:#17191f;color:#e8e9ed;border-color:#30323a}
+.app-shell.light .preview-embed{background:#20232b}
+.app-shell.light .preview-embed span{color:#a8abb5}
+.app-shell.light .footer{border-top-color:rgba(91,105,133,.13)}
+.app-shell.light .payment-note{color:#695e70}
+.app-shell.light .security-score p,
+.app-shell.light .security-row span{color:#6d778c}
+
+/* Motion across the whole product, with gentle staggered entrances */
+.page-content{animation:codryx-page-in .48s var(--motion-spring) both}
+@keyframes codryx-page-in{
+  from{opacity:0;transform:translateY(12px);filter:blur(5px)}
+  to{opacity:1;transform:translateY(0);filter:blur(0)}
+}
+.page-heading{animation:codryx-heading-in .55s var(--motion-spring) both}
+@keyframes codryx-heading-in{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+.stat-card,.bot-card,.product-card,.admin-tile,.support-card,.security-row{
+  animation:codryx-card-in .55s var(--motion-spring) both;
+  transition:transform .32s var(--motion-spring),box-shadow .32s ease,border-color .32s ease,background .32s ease;
+}
+.stat-card:nth-child(2),.bot-card:nth-child(2),.product-card:nth-child(2),.admin-tile:nth-child(2),.security-row:nth-child(2){animation-delay:.055s}
+.stat-card:nth-child(3),.bot-card:nth-child(3),.product-card:nth-child(3),.admin-tile:nth-child(3),.security-row:nth-child(3){animation-delay:.11s}
+.stat-card:nth-child(4),.product-card:nth-child(4),.admin-tile:nth-child(4),.security-row:nth-child(4){animation-delay:.165s}
+@keyframes codryx-card-in{from{opacity:0;transform:translateY(15px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+.stat-card:hover,.bot-card:hover,.product-card:hover,.admin-tile:hover{
+  transform:translateY(-5px) scale(1.008);
+}
+.panel,.modal-card,.checkout-card,.order-summary,.payment-result-card,.invoice-sheet{
+  transition:box-shadow .3s ease,border-color .3s ease,background .35s ease,transform .35s var(--motion-spring);
+}
+.btn,.icon-btn,.nav-link,.tabs button,.payment-method,.auth-socials button,.auth-submit{
+  transition:transform .22s var(--motion-spring),box-shadow .25s ease,background .25s ease,border-color .25s ease,color .25s ease,filter .25s ease;
+}
+.btn:active,.icon-btn:active,.tabs button:active,.payment-method:active{transform:scale(.95)}
+.btn-primary{box-shadow:0 8px 22px rgba(190,48,68,.20),inset 0 1px rgba(255,255,255,.2)}
+.btn-primary:hover{box-shadow:0 12px 30px rgba(190,48,68,.32),inset 0 1px rgba(255,255,255,.25)}
+.icon-btn:hover{transform:translateY(-2px) rotate(-3deg)}
+.nav-link:hover{transform:translateX(4px)}
+.toggle{transition:background .25s ease,box-shadow .25s ease}
+.toggle:after{transition:left .25s var(--motion-spring),transform .25s var(--motion-spring)}
+.toggle:active:after{transform:scale(1.12)}
+.modal-backdrop{animation:codryx-backdrop-in .24s ease both}
+.modal-card{animation:codryx-modal-in .38s var(--motion-spring) both}
+@keyframes codryx-backdrop-in{from{opacity:0}to{opacity:1}}
+@keyframes codryx-modal-in{from{opacity:0;transform:translateY(14px) scale(.975);filter:blur(5px)}to{opacity:1;transform:none;filter:blur(0)}}
+.toast{animation:codryx-toast-in .38s var(--motion-spring) both}
+@keyframes codryx-toast-in{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}
+.sidebar,.topbar,.workspace-switch,.global-search,.stat-card,.panel,.bot-card,.product-card,.admin-tile,.status-banner,.security-score,.security-row,.modal-card,.toast,.invoice-sheet,.payment-result-card,.checkout-card,.order-summary{
+  -webkit-backdrop-filter:blur(26px) saturate(155%);
+  backdrop-filter:blur(26px) saturate(155%);
+}
+@media(prefers-reduced-motion:reduce){
+  .page-content,.page-heading,.stat-card,.bot-card,.product-card,.admin-tile,.support-card,.security-row,.modal-backdrop,.modal-card,.toast{animation:none!important}
+  .stat-card,.bot-card,.product-card,.admin-tile,.panel,.modal-card,.btn,.icon-btn,.nav-link{transition:none!important}
+}
+@media(prefers-reduced-transparency:reduce){
+  .app-shell .sidebar,.app-shell .topbar,.app-shell .stat-card,.app-shell .panel,.app-shell .bot-card,.app-shell .product-card,.app-shell .admin-tile,.app-shell .modal-card,.app-shell .toast{backdrop-filter:none;-webkit-backdrop-filter:none}
+}
