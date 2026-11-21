@@ -96,7 +96,7 @@
 @media(prefers-reduced-transparency:reduce){.sidebar,.topbar,.workspace-switch,.global-search,.stat-card,.panel,.bot-card,.product-card,.admin-tile,.modal-card,.status-banner,.security-score,.security-row,.settings-panel,.invoice-sheet,.payment-result-card,.checkout-card,.order-summary{backdrop-filter:none;-webkit-backdrop-filter:none}}
 
 /* CodRyx interaction feedback: replace browser blue tap/focus flash */
-:where(button,a,[role="button"],input[type="button],input[type="submit"],.btn,.icon-btn,.nav-link){
+:where(button,a,[role="button"],input[type="button"],input[type="submit"],.btn,.icon-btn,.nav-link){
   -webkit-tap-highlight-color:transparent;
   outline:none;
   transition:transform .18s cubic-bezier(.2,.75,.25,1),box-shadow .22s ease,border-color .22s ease,background-color .22s ease,filter .22s ease;
