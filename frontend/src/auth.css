@@ -10,3 +10,36 @@
 .auth-demo-box{border-style:solid;border-color:rgba(211,71,88,.3);background:rgba(120,24,38,.13)}
 @media(max-width:480px){.auth-card{padding:25px 19px 22px;border-radius:18px}}
 @media(prefers-reduced-transparency:reduce){.auth-card,.auth-socials button,.auth-form input,.auth-demo-box{backdrop-filter:none;-webkit-backdrop-filter:none}}
+
+
+/* Authentication glass surface: balanced neutral glass with soft motion */
+.auth-shell{
+  background:
+    radial-gradient(ellipse at 12% 8%,rgba(196,55,76,.16),transparent 34%),
+    radial-gradient(ellipse at 88% 92%,rgba(110,126,170,.12),transparent 38%),
+    linear-gradient(145deg,#111016,#09090d 68%);
+}
+.auth-card{
+  border-color:rgba(255,255,255,.14);
+  background:linear-gradient(145deg,rgba(35,29,36,.76),rgba(15,14,20,.68));
+  box-shadow:0 28px 90px rgba(0,0,0,.38),inset 0 1px rgba(255,255,255,.14);
+  backdrop-filter:blur(30px) saturate(155%);
+  -webkit-backdrop-filter:blur(30px) saturate(155%);
+}
+.auth-socials button,.auth-form input,.auth-demo-box{
+  border-color:rgba(255,255,255,.13);
+  background:rgba(255,255,255,.055);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+}
+.auth-socials button:hover,.auth-demo-box button:hover{
+  transform:translateY(-3px);
+  box-shadow:0 9px 24px rgba(190,48,68,.13);
+}
+.auth-form input:focus{transform:translateY(-1px)}
+.auth-submit{box-shadow:0 9px 26px rgba(181,35,50,.28),inset 0 1px rgba(255,255,255,.2)}
+.auth-submit:hover{transform:translateY(-2px) scale(1.01);box-shadow:0 14px 34px rgba(181,35,50,.38)}
+.auth-socials button:active,.auth-submit:active,.auth-demo-box button:active{transform:scale(.97)}
+@media(prefers-reduced-transparency:reduce){
+  .auth-card,.auth-socials button,.auth-form input,.auth-demo-box{backdrop-filter:none;-webkit-backdrop-filter:none}
+}
