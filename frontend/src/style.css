@@ -94,3 +94,30 @@
 .app-shell.light .chart-bars div{background:linear-gradient(180deg,#d74b59,#9f2333)}
 .app-shell.light .invoice-watermark{color:rgba(169,35,52,.22);border-color:rgba(169,35,52,.22)}
 @media(prefers-reduced-transparency:reduce){.sidebar,.topbar,.workspace-switch,.global-search,.stat-card,.panel,.bot-card,.product-card,.admin-tile,.modal-card,.status-banner,.security-score,.security-row,.settings-panel,.invoice-sheet,.payment-result-card,.checkout-card,.order-summary{backdrop-filter:none;-webkit-backdrop-filter:none}}
+
+/* CodRyx interaction feedback: replace browser blue tap/focus flash */
+:where(button,a,[role="button"],input[type="button],input[type="submit"],.btn,.icon-btn,.nav-link){
+  -webkit-tap-highlight-color:transparent;
+  outline:none;
+  transition:transform .18s cubic-bezier(.2,.75,.25,1),box-shadow .22s ease,border-color .22s ease,background-color .22s ease,filter .22s ease;
+}
+:where(button,a,[role="button"],input[type="button"],input[type="submit"],.btn,.icon-btn,.nav-link):active{
+  transform:scale(.965);
+  filter:brightness(1.08);
+}
+:where(button,a,[role="button"],input[type="button"],input[type="submit"],.btn,.icon-btn,.nav-link):focus{outline:none}
+:where(button,a,[role="button"],input[type="button"],input[type="submit"],.btn,.icon-btn,.nav-link):focus:not(:focus-visible){box-shadow:none;outline:none}
+:where(button,a,[role="button"],input[type="button"],input[type="submit"],.btn,.icon-btn,.nav-link):focus-visible{
+  outline:2px solid color-mix(in srgb,var(--accent,#c83240) 82%,white);
+  outline-offset:3px;
+  box-shadow:0 0 0 5px color-mix(in srgb,var(--accent,#c83240) 16%,transparent),0 0 22px color-mix(in srgb,var(--accent,#c83240) 24%,transparent);
+  animation:codryx-focus-pulse 1.35s ease-in-out infinite;
+}
+@keyframes codryx-focus-pulse{
+  0%,100%{box-shadow:0 0 0 4px color-mix(in srgb,var(--accent,#c83240) 12%,transparent),0 0 12px color-mix(in srgb,var(--accent,#c83240) 15%,transparent)}
+  50%{box-shadow:0 0 0 6px color-mix(in srgb,var(--accent,#c83240) 20%,transparent),0 0 22px color-mix(in srgb,var(--accent,#c83240) 30%,transparent)}
+}
+@media(prefers-reduced-motion:reduce){
+ :where(button,a,[role="button"],input[type="button"],input[type="submit"],.btn,.icon-btn,.nav-link){transition:none}
+ :where(button,a,[role="button"],input[type="button"],input[type="submit"],.btn,.icon-btn,.nav-link):focus-visible{animation:none}
+}
