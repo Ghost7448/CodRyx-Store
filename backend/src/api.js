@@ -53,10 +53,17 @@ router.post('/bots', requireAuth, asyncRoute(async (req, res) => {
   if (name.length < 2 || name.length > 120) {
     return res.status(400).json({ error: 'Bot name must be between 2 and 120 characters.' });
   }
+  const [subscriptions] = await getPool().execute(
+    "SELECT id FROM subscriptions WHERE user_id = ? AND status = 'ACTIVE' AND (ends_at IS NULL OR ends_at > CURRENT_TIMESTAMP) ORDER BY ends_at DESC LIMIT 1",
+    [req.user.id]
+  );
+  if (!subscriptions.length) {
+    return res.status(403).json({ error: 'An active subscription is required before creating a hosted bot.' });
+  }
   const publicId = randomUUID();
   const [result] = await getPool().execute(
-    'INSERT INTO bots (public_id, user_id, name, runtime_status) VALUES (?, ?, ?, ?)',
-    [publicId, req.user.id, name, 'STOPPED']
+    'INSERT INTO bots (public_id, user_id, subscription_id, name, runtime_status) VALUES (?, ?, ?, ?, ?)',
+    [publicId, req.user.id, subscriptions[0].id, name, 'STOPPED']
   );
   res.status(201).json({ bot: { id: publicId, name, status: 'STOPPED' }, databaseId: result.insertId });
 }));
