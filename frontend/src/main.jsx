@@ -62,7 +62,7 @@ function App(){
   const go=(p)=>{if(p!==page){window.history.pushState({...window.history.state,codryxPage:p},'',window.location.href);setPage(p)}setMenu(false)};
   const changeTheme=()=>{setThemeChanging(true);setDark(v=>!v);window.clearTimeout(window.__codryxTheme);window.__codryxTheme=window.setTimeout(()=>setThemeChanging(false),720)};
   const startCheckout=(product)=>{setCheckoutProduct(product);setActiveOrder(null);setPaymentMethod('international');go('Checkout')};
-  const createPendingOrder=()=>{if(!checkoutProduct)return;const order={id:'CDX-'+Date.now().toString().slice(-7),product:checkoutProduct.name,amount:checkoutProduct.price,currency:'USD',method:paymentMethod,status:'PENDING',createdAt:new Date().toLocaleString()};setOrders(v=>[order,...v]);setActiveOrder(order);go('Payment Pending')};
+  const createPendingOrder=async()=>{if(!checkoutProduct?.id)return;try{const result=await api('/orders',{method:'POST',body:JSON.stringify({productId:checkoutProduct.id})});const o=result.order;const order={id:o.id,product:checkoutProduct.name,amount:formatMoney(o.amountMinor,o.currency),currency:o.currency,status:o.status,createdAt:new Date().toLocaleString()};setActiveOrder(order);setOrders(v=>[order,...v]);go('Payment Pending')}catch(error){notify(error.message)}};
   const previewPaymentResult=(result)=>{if(activeOrder){setActiveOrder({...activeOrder,previewResult:result})}go(result==='success'?'Payment Success':'Payment Failed')};
   const toggle=(id)=>setBots(v=>v.map(b=>b.id===id?{...b,status:b.status==='Online'?'Offline':'Online'}:b));
   const filtered=useMemo(()=>bots.filter(b=>(activeFilter==='All'||b.status===activeFilter)&&[b.name,b.type,b.guild].join(' ').toLowerCase().includes(query.toLowerCase())),[bots,activeFilter,query]);
