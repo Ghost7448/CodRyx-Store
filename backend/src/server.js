@@ -5,7 +5,7 @@ import rateLimit from 'express-rate-limit';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { checkDatabase } from './db.js';
-import { clearSessionCookie, loadUser, login, logout, publicUser, register, requireAuth } from './auth.js';
+import { bootstrapOwner, clearSessionCookie, loadUser, login, logout, publicUser, register, requireAuth } from './auth.js';
 import apiRouter from './api.js';
 
 const app = express();
@@ -40,6 +40,7 @@ app.get('/api/health', async (_req, res) => {
   }
 });
 
+app.post('/api/auth/bootstrap-owner', authLimiter, bootstrapOwner);
 app.post('/api/auth/register', authLimiter, register);
 app.post('/api/auth/login', authLimiter, login);
 app.post('/api/auth/logout', requireAuth, logout);
