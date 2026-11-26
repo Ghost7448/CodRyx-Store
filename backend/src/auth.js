@@ -118,7 +118,7 @@ export async function bootstrapOwner(req, res) {
   const email = String(req.body?.email || '').trim().toLowerCase();
   const displayName = String(req.body?.displayName || '').trim();
   const password = String(req.body?.password || '');
-  if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email) || email.length > 190 ||
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 190 ||
       displayName.length < 2 || displayName.length > 80 || password.length < 12 || password.length > 72) {
     return res.status(400).json({ error: 'Provide a valid email, display name and password (12-72 characters).' });
   }
