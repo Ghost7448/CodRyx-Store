@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite frontend --host 0.0.0.0",
     "build": "vite build frontend",
-    "preview": "vite preview frontend --host 0.0.0.0"
+    "preview": "vite preview frontend --host 0.0.0.0",
+    "start": "node backend/src/server.js",
+    "dev:server": "node --watch backend/src/server.js"
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",
@@ -14,7 +16,13 @@
     "react": "latest",
     "react-dom": "latest",
     "framer-motion": "latest",
-    "lucide-react": "latest"
+    "lucide-react": "latest",
+    "bcryptjs": "^2.4.3",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
+    "mysql2": "^3.14.0",
+    "dotenv": "^16.4.7"
   },
   "devDependencies": {}
 }
