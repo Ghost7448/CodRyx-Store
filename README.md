@@ -1,47 +1,56 @@
-# Codryx Store — Frontend Preview
+# CodRyx Store
 
-Frontend-only interactive prototype for the Codryx Discord bot hosting platform.
+CodRyx Store is a React/Vite dashboard with an Express API and MySQL-backed foundation.
 
-## Requirements
-- Node.js 20 or newer
+## Stack
 
-## Run locally
-From the repository root:
+- Frontend: React, Vite, Framer Motion, Lucide
+- Backend: Node.js, Express
+- Database: MySQL
+- Authentication: bcrypt password hashing and opaque server-side sessions stored as token hashes in MySQL
 
-```bash
-npm install
-npm run dev
-```
+## Local development
 
-Vite serves the app at `http://localhost:5173` by default.
+Requirements: Node.js 20+ and MySQL 8+.
 
-## Build
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Create a MySQL database.
+3. Copy `backend/.env.example` to `backend/.env` and configure the database connection.
+4. Apply `backend/database/schema.sql` to the database.
+5. Run the frontend:
+   ```bash
+   npm run dev
+   ```
+6. In another terminal, run the API:
+   ```bash
+   npm run dev:server
+   ```
 
-```bash
-npm run build
-npm run preview
-```
+## Production
 
-## Included screens
-- Overview dashboard
-- My Bots and instance controls (demo state)
-- Bot Store
-- Live visual Bot Customizer preview
-- User Management
-- Orders & Plans
-- Analytics
-- Support Center
-- Infrastructure and Database Center
-- Activity Logs and Settings
-- Super Admin Center, Products Management, and Security Center
+- Build the frontend: `npm run build`
+- Start the combined API and static frontend server: `npm start`
+- Configure Railway to build from the repository root and start with `npm start`.
+- Add the MySQL connection variables in Railway's Variables tab.
+- Apply `backend/database/schema.sql` to the Railway MySQL database before enabling registration.
 
-## Demo behavior
-- Client-side navigation (SPA), without full-page reloads
-- Framer Motion page transitions and CSS micro-interactions
-- Search, status filters, bot toggles, customizer preview, theme switch, and role preview
-- Sample data only; changes reset when the page reloads
-- Role selector is a visual demo; production permissions must be enforced by the backend
+## Initial API endpoints
 
-## Project layout
-- `package.json` — root-level scripts and dependencies
-- `frontend/` — Vite app source and HTML entry point
+- `GET /api/health`
+- `POST /api/auth/register`
+- `POST /api/auth/login`
+- `POST /api/auth/logout`
+- `GET /api/auth/me`
+
+New registrations are always assigned the `CUSTOMER` role. Elevated roles must not be granted through public registration.
+
+## Current implementation scope
+
+The backend foundation and database schema are in place. The existing dashboard still contains preview data and is not yet wired to these APIs. Product catalog management, real orders, Paymob checkout/webhook verification, refunds, bot provisioning, and admin workflows are future implementation steps.
+
+## Paymob safety
+
+Card details must remain on Paymob-hosted checkout. The backend must verify signed provider notifications and match order ID, amount, currency, and merchant before marking an order paid or provisioning a service. Never commit real credentials or place them in frontend code.
