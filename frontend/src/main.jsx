@@ -13,18 +13,8 @@ import './style.css';
 import './payments.css';
 import './auth.css';
 
-const initialBots = [
-  { id:'CDX-1024', name:'Codryx Support', type:'Ticket Bot', status:'Online', guild:'Codryx Community', uptime:'12d 08h', memory:'184 MB', icon:'🎫' },
-  { id:'CDX-1025', name:'Welcome Manager', type:'Welcome Bot', status:'Online', guild:'Nova Gaming', uptime:'8d 14h', memory:'96 MB', icon:'👋' },
-  { id:'CDX-1026', name:'Guard X', type:'Protection Bot', status:'Offline', guild:'The District', uptime:'—', memory:'—', icon:'🛡️' },
-  { id:'CDX-1027', name:'Utility Pro', type:'Utility Bot', status:'Online', guild:'Developers Hub', uptime:'3d 02h', memory:'121 MB', icon:'⚙️' }
-];
-const products = [
-  {name:'Ticket Bot',desc:'A complete support and ticket system.',price:'$4.99',icon:'🎫',tag:'POPULAR'},
-  {name:'Protection Bot',desc:'Moderation tools and server protection.',price:'$5.99',icon:'🛡️',tag:'SECURITY'},
-  {name:'Welcome Bot',desc:'Welcome messages, roles and onboarding.',price:'$2.99',icon:'👋',tag:'STARTER'},
-  {name:'Utility Bot',desc:'Useful tools and custom commands.',price:'$3.99',icon:'⚙️',tag:'FLEXIBLE'}
-];
+const initialBots = [];
+const products = [];
 const groups = [
   {title:'WORKSPACE',items:[['Overview',LayoutDashboard],['My Bots',Bot],['Bot Store',ShoppingBag],['Customizer',SlidersHorizontal]]},
   {title:'MANAGEMENT',items:[['Users',Users],['Orders & Plans',CreditCard],['Analytics',Activity],['Support Center',LifeBuoy]]},
@@ -33,8 +23,11 @@ const groups = [
 const adminItems = [['Admin Overview',Crown],['User Management',Users],['Bot Management',Boxes],['Products',Package],['Payments',Wallet],['Security Center',ShieldCheck]];
 const titleMap = {'Overview':'Overview','My Bots':'My Bots','Bot Store':'Bot Store','Customizer':'Bot Customizer','Users':'User Management','Orders & Plans':'Orders & Plans','Analytics':'Analytics','Support Center':'Support Center','Infrastructure':'Infrastructure','Database':'Database Center','Activity Logs':'Activity Logs','Settings':'Settings','Admin Overview':'Admin Center','User Management':'User Management','Bot Management':'Bot Management','Products':'Products Management','Payments':'Payments & Billing','Security Center':'Security Center'};
 
+async function api(path,options={}){const response=await fetch('/api'+path,{credentials:'include',headers:{'Content-Type':'application/json',...(options.headers||{})},...options});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.error||'Request failed');return data;}
+function formatMoney(minor,currency='USD'){return new Intl.NumberFormat(undefined,{style:'currency',currency}).format(Number(minor||0)/100);}
+
 function App(){
-  const [page,setPage]=useState(()=>window.history.state?.codryxPage||'Overview'),[bots,setBots]=useState(initialBots),[role,setRole]=useState('SUPER ADMIN');
+  const [page,setPage]=useState(()=>window.history.state?.codryxPage||'Overview'),[bots,setBots]=useState(initialBots),[role,setRole]=useState('CUSTOMER'),[user,setUser]=useState(null),[products,setProducts]=useState([]),[dataLoading,setDataLoading]=useState(true);
   const [dark,setDark]=useState(true),[themeChanging,setThemeChanging]=useState(false),[menu,setMenu]=useState(false),[query,setQuery]=useState('');
   const [authView,setAuthView]=useState('login'),[authNotice,setAuthNotice]=useState('');
   const [toast,setToast]=useState(''),[botName,setBotName]=useState('Codryx Support'),[welcome,setWelcome]=useState('Welcome to our support center! How can we help you today?');
@@ -42,6 +35,23 @@ function App(){
   const [activeFilter,setActiveFilter]=useState('All'),[notifications,setNotifications]=useState(true);
   const [checkoutProduct,setCheckoutProduct]=useState(null),[paymentMethod,setPaymentMethod]=useState('international');
   const [orders,setOrders]=useState([]),[activeOrder,setActiveOrder]=useState(null);
+  useEffect(()=>{
+    let alive=true;
+    const loadWorkspace=async()=>{
+      try{
+        const me=await api('/auth/me');
+        if(!alive)return;
+        if(me.user){setUser(me.user);setRole(me.user.role);setAuthView(null);
+          const [botData,productData,orderData]=await Promise.all([api('/bots'),api('/products'),api('/orders')]);
+          if(!alive)return;
+          setBots(botData.bots||[]);setProducts((productData.products||[]).map(p=>({...p,price:formatMoney(p.amountMinor,p.currency),desc:p.description||'',icon:'🤖',tag:p.billingPeriod||'PLAN'})));setOrders(orderData.orders||[]);
+        } else {setUser(null);setAuthView('login');}
+      }catch(error){if(alive){setAuthNotice(error.message||'Unable to connect to the service.');setAuthView('login');}}
+      finally{if(alive)setDataLoading(false);}
+    };
+    loadWorkspace();
+    return()=>{alive=false};
+  },[]);
   useEffect(()=>{
     if(!window.history.state?.codryxPage){window.history.replaceState({...window.history.state,codryxPage:page},'',window.location.href)}
     const handleBack=()=>{const previous=window.history.state?.codryxPage;if(previous)setPage(previous);setMenu(false)};
@@ -57,7 +67,8 @@ function App(){
   const toggle=(id)=>setBots(v=>v.map(b=>b.id===id?{...b,status:b.status==='Online'?'Offline':'Online'}:b));
   const filtered=useMemo(()=>bots.filter(b=>(activeFilter==='All'||b.status===activeFilter)&&[b.name,b.type,b.guild].join(' ').toLowerCase().includes(query.toLowerCase())),[bots,activeFilter,query]);
   const addBot=(type='Utility Bot')=>{const icon=type==='Ticket Bot'?'🎫':type==='Welcome Bot'?'👋':type==='Protection Bot'?'🛡️':'⚙️';const b={id:'CDX-'+(1028+bots.length-4),name:'New '+type,type,status:'Offline',guild:'Not connected',uptime:'—',memory:'—',icon};setBots(v=>[b,...v]);setBotName(b.name);setModal(false);go('Customizer');notify('Bot instance added in preview mode')};
-  if(authView)return <div className="auth-shell"><div className="auth-glow auth-glow-one"/><div className="auth-glow auth-glow-two"/><div className="auth-noise"/><section className="auth-card"><div className="auth-brand"><img src="/codryx-logo.svg" alt="CodRyx logo"/><div className="auth-brand-name">CODRYX<span>BOT HOSTING</span></div></div><h1>{authView==='signup'?'Create your account':'Welcome back'}</h1><p className="auth-subtitle">{authView==='signup'?'Join CodRyx and manage your Discord bots in one place.':'Sign in to continue to your CodRyx workspace.'}</p><div className="auth-socials"><button type="button" onClick={()=>setAuthNotice('Discord sign-in will be available after OAuth backend setup.')}><span className="discord-mark">●</span>Discord</button><button type="button" onClick={()=>setAuthNotice('Google sign-in will be available after OAuth backend setup.')}><span className="google-mark">G</span>Google</button></div><div className="auth-divider"><span/>OR<span/></div><form className="auth-form" onSubmit={e=>{e.preventDefault();const data=new FormData(e.currentTarget);const email=String(data.get('email')||'').trim().toLowerCase();const password=String(data.get('password')||'');if(authView==='login'&&email==='demo@codryx.store'&&password==='CodryxDemo2026!'){setAuthNotice('');setAuthView(null);return;}setAuthNotice(authView==='login'?'Invalid demo credentials. Use the demo account shown below.':'Account registration is not connected yet. Use the demo login to preview the dashboard.')}}>{authView==='signup'&&<label>Username<input type="text" name="username" placeholder="username" minLength="3" autoComplete="username" required/></label>}<label>Email<input type="email" name="email" placeholder="email@example.com" autoComplete="email" required/></label><label className="auth-password-label"><span>Password</span>{authView==='login'&&<button type="button" className="auth-forgot" onClick={()=>setAuthNotice('Password recovery will be connected with the authentication backend.')}>Forgot your password?</button>}<input type="password" name="password" placeholder={authView==='signup'?'Create a password':'Enter your password'} minLength="8" autoComplete={authView==='signup'?'new-password':'current-password'} required/></label><button className="auth-submit" type="submit">{authView==='signup'?'Create Account':'Login'}<span>→</span></button></form>{authNotice&&<div className="auth-notice" role="status">{authNotice}</div>}{authView==='login'&&<div className="auth-demo-box"><div><b>Demo account</b><span>Preview access • SUPER ADMIN</span></div><button type="button" onClick={()=>{const form=document.querySelector('.auth-form');if(form){form.elements.email.value='demo@codryx.store';form.elements.password.value='CodryxDemo2026!';setAuthNotice('Demo credentials filled. Press Login to continue.')}}}>Use demo account</button><small>Email: demo@codryx.store<br/>Password: CodryxDemo2026!</small></div>}<p className="auth-switch">{authView==='signup'?'Already have an account?':'Don’t have an account?'} <button onClick={()=>{setAuthView(authView==='signup'?'login':'signup');setAuthNotice('')}}>{authView==='signup'?'Login':'Create one'}</button></p><div className="auth-legal">By continuing, you agree to CodRyx’s Terms of Service and Privacy Policy.</div></section><div className="auth-version">CODRYX SECURE ACCOUNT ACCESS <span>•</span> V1.0</div></div>;
+  if(dataLoading)return <div className="auth-shell"><section className="auth-card"><div className="auth-brand-name">CODRYX<span>BOT HOSTING</span></div><h1>Connecting to your workspace</h1><p className="auth-subtitle">Loading your secure account and platform data.</p></section></div>;
+  if(authView)return <div className="auth-shell"><div className="auth-glow auth-glow-one"/><div className="auth-glow auth-glow-two"/><div className="auth-noise"/><section className="auth-card"><div className="auth-brand"><img src="/codryx-logo.svg" alt="CodRyx logo"/><div className="auth-brand-name">CODRYX<span>BOT HOSTING</span></div></div><h1>{authView==='signup'?'Create your account':'Welcome back'}</h1><p className="auth-subtitle">{authView==='signup'?'Create a secure account for your CodRyx workspace.':'Sign in to manage your CodRyx services.'}</p><div className="auth-divider"><span/>SECURE ACCOUNT<span/></div><form className="auth-form" onSubmit={async e=>{e.preventDefault();const data=new FormData(e.currentTarget);const payload={email:String(data.get('email')||'').trim().toLowerCase(),password:String(data.get('password')||'')};if(authView==='signup')payload.displayName=String(data.get('displayName')||'').trim();try{const result=await api(authView==='signup'?'/auth/register':'/auth/login',{method:'POST',body:JSON.stringify(payload)});setUser(result.user);setRole(result.user.role);setAuthView(null);const [botData,productData,orderData]=await Promise.all([api('/bots'),api('/products'),api('/orders')]);setBots(botData.bots||[]);setProducts((productData.products||[]).map(p=>({...p,price:formatMoney(p.amountMinor,p.currency),desc:p.description||'',icon:'🤖',tag:p.billingPeriod||'PLAN'})));setOrders(orderData.orders||[]);setAuthNotice('');}catch(error){setAuthNotice(error.message||'Authentication failed.');}}}>{authView==='signup'&&<label>Display name<input type="text" name="displayName" placeholder="Your name" minLength="2" maxLength="80" autoComplete="name" required/></label>}<label>Email<input type="email" name="email" placeholder="email@example.com" autoComplete="email" required/></label><label className="auth-password-label"><span>Password</span><input type="password" name="password" placeholder={authView==='signup'?'Create a password':'Enter your password'} minLength="10" maxLength="72" autoComplete={authView==='signup'?'new-password':'current-password'} required/></label><button className="auth-submit" type="submit">{authView==='signup'?'Create Account':'Login'}<span>→</span></button></form>{authNotice&&<div className="auth-notice" role="status">{authNotice}</div>}<p className="auth-switch">{authView==='signup'?'Already have an account?':'Don’t have an account?'} <button onClick={()=>{setAuthView(authView==='signup'?'login':'signup');setAuthNotice('')}}>{authView==='signup'?'Login':'Create one'}</button></p><div className="auth-legal">Your account is protected by secure server-side authentication.</div></section><div className="auth-version">CODRYX SECURE ACCOUNT ACCESS <span>•</span> V1.0</div></div>;
   return <div className={`app-shell ${dark?'dark':'light'} ${themeChanging?'theme-changing':''}`} style={{'--accent':accent,'--accent-soft':accent+'24'}}>
     <div className="ambient ambient-one"/><div className="ambient ambient-two"/><div className="noise"/>
     <aside className={`sidebar ${menu?'open':''}`}>
