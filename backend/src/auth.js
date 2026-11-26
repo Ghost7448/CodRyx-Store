@@ -1,4 +1,4 @@
-import { createHash, randomBytes } from 'node:crypto';
+import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
 import bcrypt from 'bcryptjs';
 import { getPool } from './db.js';
 
@@ -104,6 +104,49 @@ export async function register(req, res) {
   } catch (error) {
     if (error.code === 'ER_DUP_ENTRY') return res.status(409).json({ error: 'An account with this email already exists.' });
     throw error;
+  }
+}
+
+export async function bootstrapOwner(req, res) {
+  const configuredSecret = process.env.OWNER_SETUP_SECRET || '';
+  const suppliedSecret = String(req.body?.setupSecret || '');
+  if (configuredSecret.length < 32 || suppliedSecret.length !== configuredSecret.length ||
+      !timingSafeEqual(Buffer.from(suppliedSecret), Buffer.from(configuredSecret))) {
+    return res.status(403).json({ error: 'Owner setup is not available.' });
+  }
+
+  const email = String(req.body?.email || '').trim().toLowerCase();
+  const displayName = String(req.body?.displayName || '').trim();
+  const password = String(req.body?.password || '');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 190 ||
+      displayName.length < 2 || displayName.length > 80 || password.length < 12 || password.length > 72) {
+    return res.status(400).json({ error: 'Provide a valid email, display name and password (12-72 characters).' });
+  }
+
+  const connection = await getPool().getConnection();
+  try {
+    await connection.beginTransaction();
+    const [owners] = await connection.execute(
+      "SELECT id FROM users WHERE role IN ('ADMIN','SUPER_ADMIN') LIMIT 1 FOR UPDATE"
+    );
+    if (owners.length) {
+      await connection.rollback();
+      return res.status(409).json({ error: 'An owner account has already been initialized.' });
+    }
+    const passwordHash = await bcrypt.hash(password, 12);
+    const [result] = await connection.execute(
+      "INSERT INTO users (email, display_name, password_hash, role, status) VALUES (?, ?, ?, 'SUPER_ADMIN', 'ACTIVE')",
+      [email, displayName, passwordHash]
+    );
+    await connection.commit();
+    await createSession(result.insertId, res);
+    return res.status(201).json({ user: { id: result.insertId, email, displayName, role: 'SUPER_ADMIN' } });
+  } catch (error) {
+    await connection.rollback();
+    if (error.code === 'ER_DUP_ENTRY') return res.status(409).json({ error: 'An account with this email already exists.' });
+    throw error;
+  } finally {
+    connection.release();
   }
 }
 
