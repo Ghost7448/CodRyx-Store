@@ -5,8 +5,8 @@ This service hosts the API and serves the Vite frontend build from the repositor
 ## Local setup
 
 1. Install dependencies from the repository root: `npm install`.
-2. Copy `backend/.env.example` to `backend/.env` and fill in local MySQL settings.
-3. Create the database, then run `backend/database/schema.sql` and `backend/database/production-upgrade.sql` against it.
+2. Copy `.env.example` to `.env` in the repository root and fill in local MySQL settings.
+3. Create the database, then run `database/schema.sql` and `database/production-upgrade.sql` against it.
 4. Run `npm run dev:server` for the API or `npm run dev` for the frontend.
 5. Set a strong `OWNER_SETUP_SECRET` in the server environment, then make one authenticated bootstrap request to `/api/auth/bootstrap-owner` with `setupSecret`, `email`, `displayName`, and a password of at least 12 characters. Remove `OWNER_SETUP_SECRET` from the environment immediately after the first owner is created.
 
