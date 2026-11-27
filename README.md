@@ -18,8 +18,8 @@ Requirements: Node.js 20+ and MySQL 8+.
    npm install
    ```
 2. Create a MySQL database.
-3. Copy `backend/.env.example` to `backend/.env` and configure the database connection.
-4. Apply `backend/database/schema.sql` to the database.
+3. Copy `.env.example` to `.env` in the repository root and configure the database connection.
+4. Apply `database/schema.sql` to the database.
 5. Run the frontend:
    ```bash
    npm run dev
@@ -35,7 +35,7 @@ Requirements: Node.js 20+ and MySQL 8+.
 - Start the combined API and static frontend server: `npm start`
 - Configure Railway to build from the repository root and start with `npm start`.
 - Add the MySQL connection variables in Railway's Variables tab.
-- Apply `backend/database/schema.sql` to the Railway MySQL database before enabling registration.
+- Apply `database/schema.sql` to the Railway MySQL database before enabling registration.
 
 ## Initial API endpoints
 
